@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nile Sky | WeatherMap</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="masthead">
+    <h1 class="masthead__title">Nile Sky</h1>
+    <p class="masthead__sub">Type a place, or tap the map, to see its weather.</p>
+  </header>
+
+  <main class="stage">
+    <form id="placeForm" class="finder" novalidate>
+      <label for="placeInput" class="sr-only">Location</label>
+      <input id="placeInput" class="finder__input" type="text"
+             placeholder="City or address, e.g. Port Sudan" autocomplete="off" required>
+      <button type="submit" class="finder__go">Get Weather</button>
+    </form>
+
+    <div id="favBar" class="favbar" aria-label="Saved places"></div>
+    <div id="noticeSlot" class="notice-slot" role="status" aria-live="polite"></div>
+
+    <div class="mapwrap">
+      <div id="skyMap" class="skymap"></div>
+      <div id="busyVeil" class="busy hidden" aria-hidden="true">
+        <div class="busy__ring"></div>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
