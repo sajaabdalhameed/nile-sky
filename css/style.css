@@ -1,5 +1,13 @@
+/* ==========================================================
+   Nile Sky: sunset palette
+   1. Tokens and page mood   2. Base   3. Header   4. Form
+   5. Favourites   6. Notices   7. Map and spinner
+   8. Popup card   9. Responsive and motion
+   ========================================================== */
+
+/* ---------- 1. Tokens and page mood ---------- */
 :root {
-    --ink: #2b1b3d;
+  --ink: #2b1b3d;
   --nile: #c2410c;
   --sun: #f5b942;
   --haze: #fbf1e6;
@@ -7,12 +15,16 @@
   --calm: #1f7a4d;
   --edge: #d9c4b0;
 }
+
+/* background colour follows the weather (JS sets body[data-sky]) */
 body { --page-bg: var(--haze); --page-sub: var(--nile); }
 body[data-sky="clear"]  { --page-bg: #f6e7b4; }
-body[data-sky="cloudy"] { --page-bg: #d5dde5; }
-body[data-sky="rain"]   { --page-bg: #aebfd0; --page-sub: var(--ink); }
+body[data-sky="cloudy"] { --page-bg: #d9d6e0; }
+body[data-sky="rain"]   { --page-bg: #b4bfd0; --page-sub: var(--ink); }
 body[data-sky="dust"]   { --page-bg: #e4c79a; --page-sub: var(--ink); }
-body[data-sky="night"]  { --page-bg: #14213d; --page-sub: #f2b134; color: #e9eef7; }
+body[data-sky="night"]  { --page-bg: #1e1230; --page-sub: var(--sun); color: #f1e9fa; }
+
+/* ---------- 2. Base ---------- */
 * { box-sizing: border-box; }
 
 body {
@@ -21,7 +33,7 @@ body {
   font-size: 1rem;
   line-height: 1.5;
   color: var(--ink);
-    background-color: var(--page-bg);
+  background-color: var(--page-bg);
   transition: background-color 1.2s ease;
 }
 
@@ -36,7 +48,7 @@ body {
 
 .hidden { display: none !important; }
 
-/* Heading: exactly 2x body size, soft realistic shadow */
+/* ---------- 3. Header: title is exactly 2x body size, with a soft shadow ---------- */
 .masthead {
   text-align: center;
   padding: 1.5rem 1rem 0.5rem;
@@ -48,13 +60,19 @@ body {
   padding: 0.3rem 1.4rem;
   font-size: 2rem;
   font-weight: 800;
+  color: var(--ink);
   background: #fff;
   border-bottom: 4px solid var(--sun);
   border-radius: 6px;
-  box-shadow: 0 6px 14px rgba(20, 33, 61, 0.18), 0 1px 3px rgba(20, 33, 61, 0.25);
+  box-shadow: 0 6px 14px rgba(43, 27, 61, 0.18), 0 1px 3px rgba(43, 27, 61, 0.25);
 }
 
-.masthead__sub { margin: 0.6rem 0 0; color: var(--page-sub); font-weight: 600; }
+.masthead__sub {
+  margin: 0.6rem 0 0;
+  color: var(--page-sub);
+  font-weight: 600;
+  transition: color 1.2s ease;
+}
 
 .stage {
   max-width: 960px;
@@ -62,43 +80,8 @@ body {
   padding: 0.75rem 1rem 2rem;
 }
 
-/* Form */
+/* ---------- 4. Form ---------- */
 .finder { display: flex; gap: 0.6rem; }
-
-
-.finder__input:focus {
-  border-color: var(--nile);
-  box-shadow: 0 0 0 4px rgba(27, 127, 140, 0.18);
-}
-
-.finder__go {
-  appearance: none;
-  -webkit-appearance: none;
-  font: inherit;
-  font-weight: 600;
-  padding: 0.65rem 1.5rem;
-  color: #fff;
-  background: var(--ink);
-  border: 2px solid var(--ink);
-  border-radius: 12px;
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.15s ease;
-}
-
-.finder__go:hover { background: var(--nile); border-color: var(--nile); transform: translateY(-2px); }
-.finder__go:focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; }
-
-/* Favourites */
-.favbar { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
-
-.chip {
-  display: inline-flex;
-  align-items: center;
-  background: #fff;
-  border: 2px solid var(--edge);
-  border-radius: 999px;
-  overflow: hidden;
-}
 
 .finder__input {
   flex: 1;
@@ -112,32 +95,76 @@ body {
   border-radius: 12px;
   outline: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
-} 
-.chip__go, .chip__drop {
+}
+
+.finder__input:hover { border-color: var(--nile); }
+
+.finder__input:focus {
+  border-color: var(--nile);
+  box-shadow: 0 0 0 4px rgba(194, 65, 12, 0.18);
+}
+
+.finder__go {
+  appearance: none;
+  -webkit-appearance: none;
   font: inherit;
+  font-weight: 600;
+  padding: 0.65rem 1.5rem;
+  color: #fff;
+  background: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+
+.finder__go:hover { background: var(--nile); border-color: var(--nile); transform: translateY(-2px); }
+.finder__go:focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; }
+
+/* ---------- 5. Favourites ---------- */
+.favbar { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  background: #fff;
+  border: 2px solid var(--edge);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.chip__go,
+.chip__drop {
+  font: inherit;
+  color: var(--ink);
   background: none;
   border: 0;
   cursor: pointer;
-  color: var(--ink);
   transition: background 0.2s ease;
 }
 
 .chip__go { padding: 0.15rem 0.8rem; }
 .chip__drop { padding: 0.15rem 0.6rem; color: var(--alarm); }
-.chip__go:hover, .chip__drop:hover { background: var(--haze); }
+.chip__go:hover,
+.chip__drop:hover { background: var(--haze); }
 
-/* Notices (errors / confirmations) */
+/* ---------- 6. Notices (errors and confirmations) ---------- */
 .notice-slot { margin-top: 0.75rem; }
 
 .notice {
   padding: 0.7rem 1rem;
+  color: var(--ink);
   background: #fff;
-  border-radius: 10px;
   border-left: 6px solid var(--nile);
-  box-shadow: 0 2px 8px rgba(20, 33, 61, 0.12);
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(43, 27, 61, 0.12);
 }
 
-/* Map: exactly 70% of viewport height, navy border */
+.notice--error { border-left-color: var(--alarm); }
+.notice--warn  { border-left-color: var(--sun); }
+.notice--ok    { border-left-color: var(--calm); }
+
+/* ---------- 7. Map: exactly 70% of the viewport height, dark border ---------- */
 .mapwrap {
   position: relative;
   height: 70vh;
@@ -145,11 +172,12 @@ body {
   border: 3px solid var(--ink);
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 8px 20px rgba(20, 33, 61, 0.22);
+  box-shadow: 0 8px 20px rgba(43, 27, 61, 0.22);
 }
 
+.skymap { width: 100%; height: 100%; }
 
-/* Loading spinner */
+/* loading spinner */
 .busy {
   position: absolute;
   inset: 0;
@@ -157,12 +185,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(234, 240, 244, 0.65);
+  background: rgba(251, 241, 230, 0.7);
 }
-
-.notice--error { border-left-color: var(--alarm); }
-.notice--warn { border-left-color: var(--sun); }
-.notice--ok { border-left-color: var(--calm); }
 
 .busy__ring {
   width: 52px;
@@ -175,83 +199,49 @@ body {
 
 @keyframes ring-turn { to { transform: rotate(360deg); } }
 
-/* Popup card */
-.skycard { min-width: 210px; font-family: 'Cairo', system-ui, sans-serif; }
-.skycard__place { margin: 0; font-size: 1.15rem; font-weight: 800; }
-.skycard__now { display: flex; align-items: center; gap: 0.25rem; }
-.skycard__icon { width: 64px; height: 64px; background: var(--ink); border-radius: 50%; }
-.skycard__deg { font-size: 2rem; font-weight: 800; line-height: 1; }
-.skycard__desc { margin: 0 0 0.4rem; text-transform: capitalize; color: var(--nile); font-weight: 600; }
+/* ---------- 8. Popup card (compact so it fits inside the map) ---------- */
+.skycard { min-width: 230px; font-family: 'Cairo', system-ui, sans-serif; }
+
+/* Leaflet gives every popup paragraph a big margin; this selector is stronger */
+.leaflet-popup-content .skycard p { margin: 0 0 0.4rem; }
+
+.skycard__place { margin: 0 0 0.1rem; font-size: 1.05rem; font-weight: 800; }
+
+.skycard__now { display: flex; align-items: center; gap: 0.4rem; }
+.skycard__icon { display: block; width: 48px; height: 48px; }
+.skycard__icon svg { display: block; width: 100%; height: 100%; }
+.skycard__deg { font-size: 1.7rem; font-weight: 800; line-height: 1; }
+
+.skycard__desc {
+  text-transform: capitalize;
+  color: var(--nile);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
 
 .skycard__facts {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 0.3rem;
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.4rem;
   padding: 0;
   text-align: center;
-} 
-
-.skymap { width: 100%; height: 100%; }
-
-.skycard__facts div { background: var(--haze); border-radius: 8px; padding: 0.25rem 0.1rem; }
-.skycard__facts dt { font-size: 0.75rem; color: #51607a; }
-.skycard__facts dd { margin: 0; font-weight: 600; }
-
-.skycard__btn {
-  flex: 1;
-  font: inherit;
-  font-weight: 600;
-  padding: 0.35rem 0.5rem;
-  color: #fff;
-  background: var(--ink);
-  border: 0;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.2s ease;
 }
 
-.skycard__tip { margin: 0 0 0.6rem; padding: 0.4rem 0.6rem; border-left: 4px solid var(--sun); background: #fff8e6; font-size: 0.9rem; }
+.skycard__facts div { padding: 0.2rem 0.1rem; background: var(--haze); border-radius: 8px; }
+.skycard__facts dt { font-size: 0.7rem; color: #6b5a78; }
+.skycard__facts dd { margin: 0; font-size: 0.85rem; font-weight: 600; }
 
-.skycard__actions { display: flex; gap: 0.4rem; }
-
-.skycard__btn--alt { background: var(--nile); }
-.skycard__btn:hover { background: var(--sun); color: var(--ink); }
-
-@media (max-width: 560px) {
-  .finder { flex-direction: column; }
-  .finder__go { width: 100%; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .finder__go, .finder__input, .skycard__btn { transition: none; }
-}
-/* Loaded after style.css: styles for the new popup features */
-
-/* custom SVG icons replace the OpenWeatherMap images */
-.skycard__icon {
-  display: block;
-  width: 64px;
-  height: 64px;
-  background: none;
-  border-radius: 0;
-}
-
-.skycard__icon svg { display: block; width: 100%; height: 100%; }
-
-/* mood sentence */
 .skycard__mood {
-  margin: 0 0 0.5rem;
-  padding: 0.4rem 0.6rem;
+  padding: 0.3rem 0.5rem;
   background: var(--haze);
   border-radius: 8px;
+  font-size: 0.85rem;
   font-weight: 600;
-  font-size: 0.95rem;
 }
 
-/* golden hour / blue hour rows */
-.skycard__light { margin: 0 0 0.6rem; font-size: 0.85rem; }
-.skycard__light p { margin: 0 0 0.15rem; }
+.skycard__light { margin: 0 0 0.4rem; font-size: 0.78rem; }
+.leaflet-popup-content .skycard .skycard__light p { margin: 0 0 0.1rem; }
 
 .skycard__light p::before {
   content: '';
@@ -265,8 +255,44 @@ body {
 
 .skycard__light p[data-kind="blue"]::before { background: #3d7ea6; }
 
-/* three buttons: postcard goes on its own row */
-.skycard__actions { flex-wrap: wrap; }
+.skycard__tip {
+  padding: 0.3rem 0.5rem;
+  background: #fff8e6;
+  border-left: 4px solid var(--sun);
+  font-size: 0.8rem;
+}
+
+.skycard__actions { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+.skycard__btn {
+  flex: 1;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.3rem 0.4rem;
+  color: #fff;
+  background: var(--ink);
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.skycard__btn--alt { background: var(--nile); }
 .skycard__btn--wide { flex-basis: 100%; }
+.skycard__btn:hover { background: var(--sun); color: var(--ink); }
 .skycard__btn:disabled { opacity: 0.6; cursor: progress; }
 
+/* ---------- 9. Responsive and reduced motion ---------- */
+@media (max-width: 560px) {
+  .finder { flex-direction: column; }
+  .finder__go { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body,
+  .masthead__sub,
+  .finder__go,
+  .finder__input,
+  .skycard__btn { transition: none; }
+}
