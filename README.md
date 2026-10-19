@@ -1,8 +1,10 @@
+Name : Saja abdalhameed _ IT
+
 # Nile Sky (WeatherMap SPA)
 
 A client-side single page app: type a place (or tap the map) and see its live weather in a popup on the map. Built with pure HTML5, CSS3 and asynchronous vanilla JavaScript. No frameworks, no jQuery.
 
-**Live demo:** https://YOUR-USERNAME.github.io/YOUR-REPO/
+**Live demo:** https://sajaabdalhameed.github.io/nile-sky/
 
 ## APIs used
 - **OpenWeatherMap Current Weather** (`/data/2.5/weather`), needs a free API key.

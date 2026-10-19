@@ -109,6 +109,20 @@
       ', humidity ' + report.main.humidity + '%, wind ' + kmh + ' km/h (via Nile Sky)';
   }
 
+  /* ---------- page mood: background colour follows the weather ---------- */
+  function skyMoodOf(report) {
+    const family = report.weather[0].main;
+    const atNight = report.weather[0].icon.endsWith('n');
+    if (['Dust', 'Sand', 'Haze', 'Smoke'].includes(family)) return 'dust';
+    if (['Rain', 'Drizzle', 'Thunderstorm'].includes(family)) return 'rain';
+    if (atNight) return 'night';
+    return family === 'Clouds' ? 'cloudy' : 'clear';
+  }
+
+  function tintPage(report) {
+    document.body.dataset.sky = skyMoodOf(report);
+  }
+
   /* ---------- favourites (LocalStorage) ---------- */
   function readShelf() {
     try {
@@ -180,10 +194,10 @@
     card.append(make('h2', 'skycard__place', spot.title));
 
     const now = make('div', 'skycard__now');
-    const icon = make('img', 'skycard__icon');
-    icon.src = 'https://openweathermap.org/img/wn/' + report.weather[0].icon + '@2x.png';
-    icon.alt = report.weather[0].main;
-    now.append(icon, make('span', 'skycard__deg', Math.round(report.main.temp) + '°C'));
+    now.append(
+      NileSkyKit.makeIcon(report),
+      make('span', 'skycard__deg', Math.round(report.main.temp) + '°C')
+    );
     card.append(now, make('p', 'skycard__desc', report.weather[0].description));
 
     const facts = make('dl', 'skycard__facts');
@@ -197,7 +211,18 @@
       cell.append(make('dt', null, label), make('dd', null, value));
       facts.append(cell);
     });
-    card.append(facts, make('p', 'skycard__tip', adviceFor(report)));
+
+    const moodText = NileSkyKit.moodLine(report);
+    const moodBox = make('p', 'skycard__mood', moodText);
+    moodBox.dir = 'auto';
+    const light = NileSkyKit.lightInfo(spot, report);
+
+    card.append(
+      facts,
+      moodBox,
+      NileSkyKit.lightRows(light),
+      make('p', 'skycard__tip', adviceFor(report))
+    );
 
     const actions = make('div', 'skycard__actions');
     const shareBtn = make('button', 'skycard__btn', 'Share');
@@ -206,7 +231,23 @@
     const saveBtn = make('button', 'skycard__btn skycard__btn--alt', 'Save place');
     saveBtn.type = 'button';
     saveBtn.addEventListener('click', () => saveSpot(spot));
-    actions.append(shareBtn, saveBtn);
+
+    const postcardBtn = make('button', 'skycard__btn skycard__btn--wide', 'Weather postcard');
+    postcardBtn.type = 'button';
+    postcardBtn.addEventListener('click', async () => {
+      postcardBtn.disabled = true;
+      try {
+        const outcome = await NileSkyKit.savePostcard({ spot, report, mood: moodText, light });
+        if (outcome === 'downloaded') say('Postcard saved to your downloads.', 'ok');
+      } catch (err) {
+        console.error(err);
+        say('Could not create the postcard. Please try again.', 'error');
+      } finally {
+        postcardBtn.disabled = false;
+      }
+    });
+
+    actions.append(shareBtn, saveBtn, postcardBtn);
     card.append(actions);
     return card;
   }
@@ -218,7 +259,9 @@
       livePin = null;
     }
     livePin = L.marker([spot.lat, spot.lng]).addTo(radar);
-    livePin.bindPopup(buildCard(spot, report), { minWidth: 220 });
+    livePin.bindPopup(buildCard(spot, report), { minWidth: 240 });
+    NileSkyKit.drawLightArcs(radar, spot, NileSkyKit.lightInfo(spot, report).arcs);
+    tintPage(report);
     radar.once('moveend', () => {
       if (livePin) livePin.openPopup();
     });
