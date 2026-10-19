@@ -226,3 +226,47 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .finder__go, .finder__input, .skycard__btn { transition: none; }
 }
+/* Loaded after style.css: styles for the new popup features */
+
+/* custom SVG icons replace the OpenWeatherMap images */
+.skycard__icon {
+  display: block;
+  width: 64px;
+  height: 64px;
+  background: none;
+  border-radius: 0;
+}
+
+.skycard__icon svg { display: block; width: 100%; height: 100%; }
+
+/* mood sentence */
+.skycard__mood {
+  margin: 0 0 0.5rem;
+  padding: 0.4rem 0.6rem;
+  background: var(--haze);
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* golden hour / blue hour rows */
+.skycard__light { margin: 0 0 0.6rem; font-size: 0.85rem; }
+.skycard__light p { margin: 0 0 0.15rem; }
+
+.skycard__light p::before {
+  content: '';
+  display: inline-block;
+  width: 0.7rem;
+  height: 0.7rem;
+  margin-inline-end: 0.4rem;
+  border-radius: 50%;
+  background: var(--sun);
+}
+
+.skycard__light p[data-kind="blue"]::before { background: #3d7ea6; }
+
+/* three buttons: postcard goes on its own row */
+.skycard__actions { flex-wrap: wrap; }
+.skycard__btn--wide { flex-basis: 100%; }
+.skycard__btn:disabled { opacity: 0.6; cursor: progress; }
+
