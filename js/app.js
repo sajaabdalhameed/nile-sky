@@ -64,7 +64,9 @@
     if (err.httpCode === 404) return 'The weather service has no data for this spot.';
     if (err.httpCode === 401) return 'The API key was rejected. Check js/config.js (new keys can take a while to activate).';
     if (err.httpCode === 429) return 'Too many requests. Wait a minute and try again.';
-    if (err instanceof TypeError) return 'Network problem. Check your connection and try again.';
+    if (err instanceof TypeError && /fetch|network|load failed/i.test(err.message)) {
+      return 'Network problem. Check your connection and try again.';
+    }
     return 'Something went wrong. Please try again.';
   }
 
@@ -259,7 +261,10 @@
       livePin = null;
     }
     livePin = L.marker([spot.lat, spot.lng]).addTo(radar);
-    livePin.bindPopup(buildCard(spot, report), { minWidth: 240 });
+    livePin.bindPopup(buildCard(spot, report), {
+      minWidth: 240,
+      maxHeight: Math.round(radar.getSize().y * 0.75)
+    });
     NileSkyKit.drawLightArcs(radar, spot, NileSkyKit.lightInfo(spot, report).arcs);
     tintPage(report);
     radar.once('moveend', () => {
