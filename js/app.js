@@ -73,7 +73,7 @@
   /* ---------- Phase 2: geocoding (Nominatim) ---------- */
   async function findCoordinates(placeText) {
     const url = 'https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q=' +
-      encodeURIComponent(placeText);
+      encodeURIComponent(placeText);'&email=sajaabdahamed@gmail.com'
     const hits = await pullJson(url);
     if (!Array.isArray(hits) || hits.length === 0) {
       const miss = new Error('no match');
