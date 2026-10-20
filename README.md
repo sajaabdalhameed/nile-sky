@@ -1,4 +1,6 @@
-Name : Saja abdalhameed _IT
+## Name : Saja abdalhameed _ IT (Seventh Semester)
+
+
 # Nile Sky (WeatherMap SPA)
 
 A client-side single page app: type a place (or tap the map) and see its live weather in a popup on the map. Built with pure HTML5, CSS3 and asynchronous vanilla JavaScript. No frameworks, no jQuery.
@@ -20,7 +22,6 @@ A client-side single page app: type a place (or tap the map) and see its live we
 ```
 index.html          page structure only
 css/style.css       main styling
-css/extras.css      styling for the extra popup features
 js/config.js        API key
 js/app.js           main flow: map, geocoding, weather fetch, popup, favourites
 js/sky-icons.js     custom SVG weather icons (flame, meteor and stars, ...)
