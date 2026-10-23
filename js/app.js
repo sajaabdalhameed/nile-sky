@@ -73,7 +73,7 @@
   /* ---------- Phase 2: geocoding (Nominatim) ---------- */
   async function findCoordinates(placeText) {
     const url = 'https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q=' +
-      encodeURIComponent(placeText);'&email=sajaabdahamed@gmail.com'
+      encodeURIComponent(placeText) + '&email=sajaabdahamed@gmail.com';
     const hits = await pullJson(url);
     if (!Array.isArray(hits) || hits.length === 0) {
       const miss = new Error('no match');
@@ -102,7 +102,6 @@
     if (degrees >= 38) return 'Very hot. Drink water often and avoid the midday sun.';
     if (family === 'Rain' || family === 'Drizzle' || family === 'Thunderstorm') return 'Rain expected. Take an umbrella.';
     if (degrees <= 10) return 'Cold. Wear a warm layer.';
-    return 'Comfortable conditions for being outside.';
   }
 
   function summaryLine(title, report) {
