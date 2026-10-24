@@ -38,7 +38,10 @@
 
   function say(message, mood) {
     clearTimeout(notifyTimer);
-    ui.noticeSlot.replaceChildren(make('div', 'notice notice--' + mood, message));
+    const card = make('div', 'notice notice--' + mood, message);
+    // errors are announced right away by screen readers; the rest are polite
+    card.setAttribute('role', mood === 'error' ? 'alert' : 'status');
+    ui.noticeSlot.replaceChildren(card);
     if (mood === 'ok') {
       notifyTimer = setTimeout(wipeSay, 4000);
     }
@@ -102,6 +105,7 @@
     if (degrees >= 38) return 'Very hot. Drink water often and avoid the midday sun.';
     if (family === 'Rain' || family === 'Drizzle' || family === 'Thunderstorm') return 'Rain expected. Take an umbrella.';
     if (degrees <= 10) return 'Cold. Wear a warm layer.';
+    return 'Pleasant conditions. Enjoy your day.';
   }
 
   function summaryLine(title, report) {
@@ -134,7 +138,11 @@
   }
 
   function writeShelf(list) {
-    localStorage.setItem(SHELF_NAME, JSON.stringify(list));
+    try {
+      localStorage.setItem(SHELF_NAME, JSON.stringify(list));
+    } catch (e) {
+      say('Could not save your places in this browser.', 'warn');
+    }
   }
 
   function saveSpot(spot) {
@@ -195,8 +203,12 @@
     card.append(make('h2', 'skycard__place', spot.title));
 
     const now = make('div', 'skycard__now');
+    // official OpenWeatherMap icon, as the specification requires
+    const owmIcon = make('img', 'skycard__icon');
+    owmIcon.src = 'https://openweathermap.org/img/wn/' + report.weather[0].icon + '@2x.png';
+    owmIcon.alt = report.weather[0].main;
     now.append(
-      NileSkyKit.makeIcon(report),
+      owmIcon,
       make('span', 'skycard__deg', Math.round(report.main.temp) + '°C')
     );
     card.append(now, make('p', 'skycard__desc', report.weather[0].description));

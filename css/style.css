@@ -14,6 +14,7 @@
   --alarm: #b3261e;
   --calm: #1f7a4d;
   --edge: #d9c4b0;
+  --navy: #14213d;
 }
 
 /* background colour follows the weather (JS sets body[data-sky]) */
@@ -160,7 +161,8 @@ body {
   box-shadow: 0 2px 8px rgba(43, 27, 61, 0.12);
 }
 
-.notice--error { border-left-color: var(--alarm); }
+.notice--error { border-left-color: var(--alarm); background: #fdecea; font-weight: 600; }
+.notice--error::before { content: '\26A0\FE0F  '; }
 .notice--warn  { border-left-color: var(--sun); }
 .notice--ok    { border-left-color: var(--calm); }
 
@@ -169,7 +171,7 @@ body {
   position: relative;
   height: 70vh;
   margin-top: 1rem;
-  border: 3px solid var(--ink);
+  border: 3px solid var(--navy);
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 8px 20px rgba(43, 27, 61, 0.22);
@@ -208,7 +210,7 @@ body {
 .skycard__place { margin: 0 0 0.1rem; font-size: 1.05rem; font-weight: 800; }
 
 .skycard__now { display: flex; align-items: center; gap: 0.4rem; }
-.skycard__icon { display: block; width: 48px; height: 48px; }
+.skycard__icon { display: block; width: 56px; height: 56px; object-fit: contain; }
 .skycard__icon svg { display: block; width: 100%; height: 100%; }
 .skycard__deg { font-size: 1.7rem; font-weight: 800; line-height: 1; }
 
