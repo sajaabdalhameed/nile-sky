@@ -117,6 +117,7 @@
     return [lat2 / RAD, lng2 / RAD];
   }
 
+  
   function sectorPoints(spot, azFrom, azTo) {
     let delta = (((azTo - azFrom) % 360) + 360) % 360;
     if (delta > 180) delta -= 360;
