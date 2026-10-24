@@ -265,6 +265,7 @@
     return card;
   }
 
+  
   /* ---------- Phase 4: centre + marker ---------- */
   function placePin(spot, report) {
     if (livePin) {
