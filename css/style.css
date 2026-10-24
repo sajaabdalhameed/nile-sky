@@ -266,6 +266,7 @@ body {
 
 .skycard__actions { display: flex; flex-wrap: wrap; gap: 0.4rem; }
 
+/* popup buttons: alt = second colour, wide = full row, plus hover and disabled states */
 .skycard__btn {
   flex: 1;
   font: inherit;
@@ -279,7 +280,6 @@ body {
   cursor: pointer;
   transition: background 0.2s ease, color 0.2s ease;
 }
-
 .skycard__btn--alt { background: var(--nile); }
 .skycard__btn--wide { flex-basis: 100%; }
 .skycard__btn:hover { background: var(--sun); color: var(--ink); }
